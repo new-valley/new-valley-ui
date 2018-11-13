@@ -7,6 +7,10 @@ const listItemMixin = {
         subtitle: {
             required: false,
             type: String
+        },
+        to : {
+            required: false,
+            type: String
         }
     }
 }
