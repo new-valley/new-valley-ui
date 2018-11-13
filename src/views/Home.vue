@@ -31,8 +31,8 @@
       Topics,
       Login
     },
-    created () {
-      this.$client.log()
+    async created () {
+      console.log(await this.$client.getAvatars(1))
     },
     data () {
       return {
