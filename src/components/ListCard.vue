@@ -21,7 +21,7 @@
           avatar
         >
           <slot name="avatar" :src="item.avatar" />
-          <slot name="item" :title="item.title" :subtitle="item.subtitle" />
+          <slot name="item" :title="item.title" :subtitle="item.subtitle" :to="item.to"/>
         </v-list-tile>
       </template>
     </v-list>
