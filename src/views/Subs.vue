@@ -2,7 +2,7 @@
   <div>
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
-        <sub-foruns-card :items="items"/>
+        <basic-list :items="items"/>
       </v-flex>
     </v-layout>
   </div>
@@ -10,10 +10,10 @@
 </template>
 
 <script>
-  import SubForunsCard from '../components/SubForuns'
+  import BasicList from '../components/BasicListPage'
   export default {
     components: {
-      SubForunsCard
+      BasicList
     },
     props: {
       id: {

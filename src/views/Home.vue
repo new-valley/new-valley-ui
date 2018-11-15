@@ -2,7 +2,7 @@
   <div>
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
-        <sub-foruns-card :items="items"/>
+        <basic-list :items="items"/>
       </v-flex>
     </v-layout>
     <v-layout row>
@@ -17,11 +17,11 @@
 </template>
 
 <script>
-  import SubForunsCard from '../components/SubForuns'
+  import BasicList from '../components/BasicListPage'
   import Login from '../components/Login'
   export default {
     components: {
-      SubForunsCard,
+      BasicList,
       Login
     },
     async created () {
@@ -40,7 +40,7 @@
     data () {
       return {
         items: [
-          { header: 'Subforuns' }
+          { header: 'Subfóruns' }
         ]
       }
     }
