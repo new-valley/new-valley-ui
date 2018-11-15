@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default function (Vue, options) {
-    axios.defaults.baseURL = 'http://localhost:5000/api'
+    axios.defaults.baseURL = 'http://35.226.124.10:7310/api/'
     Vue.Client = {
         async get (uri, id, resource) {
             if(id) {
