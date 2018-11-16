@@ -17,7 +17,7 @@ export default new Router({
       path: '/s/:id',
       component: () => import('./views/Subs.vue'),
       name: 's',
-      props: true      
+      props: true
     },
     {
       path: '/about',

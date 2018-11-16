@@ -13,7 +13,6 @@
       </v-flex>
     </v-layout>
   </div>
-  
 </template>
 
 <script>
@@ -35,12 +34,12 @@
         }
         const divider = { divider: true, inset: true }
         this.items.push(item, divider)
-      })        
+      })
     },
     data () {
       return {
         items: [
-          { header: 'Subfóruns' }
+          { header: 'Subforums' }
         ]
       }
     }
