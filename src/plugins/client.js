@@ -10,7 +10,7 @@ export default function (Vue, options) {
                     uri = `${uri}/${resource}`
             }
             if(querystring) {
-                uri = `${uri}?{querystring}`
+                uri = `${uri}?${querystring}`
             }
             const response = await axios.get(uri)
             return response.data.data
