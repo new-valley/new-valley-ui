@@ -24,7 +24,7 @@ export default function (Vue, options) {
         async getUsers (id, resource) {
             return await this.get('/users', id, resource)
         },
-        async getTopcs (id, resource) {
+        async getTopics (id, resource) {
             return await this.get('/topics', id, resource)
         },
     }

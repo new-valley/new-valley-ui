@@ -20,6 +20,12 @@ export default new Router({
       props: true
     },
     {
+      path: '/t/:id',
+      component: () => import('./views/Topic.vue'),
+      name: 't',
+      props: true
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
