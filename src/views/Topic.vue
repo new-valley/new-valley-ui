@@ -30,7 +30,7 @@
     async created () {
       this.$client.getTopics(this.id)
         .then((topic) => {
-            this.items[0] = { header: topic.title };
+            this.items[0] = { header: topic.title }
         })
       const posts = await this.$client.getTopics(this.id, 'posts')
       posts.map((post) => {
