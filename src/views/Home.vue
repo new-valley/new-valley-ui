@@ -25,7 +25,7 @@
     },
     async created () {
       const subs = await this.$client.getSubForums()
-      subs.map((sub) => {
+      subs.data.map((sub) => {
         const item = {
           avatar: 'http://forum.imguol.com/forum/themes/jogos/images/folder_new_big.gif',
           title: sub.title,

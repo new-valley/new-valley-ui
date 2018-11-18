@@ -13,7 +13,7 @@ export default function (Vue, options) {
                 uri = `${uri}?${querystring}`
             }
             const response = await axios.get(uri)
-            return response.data.data
+            return response.data
         },
         async getSubForums (id, resource, querystring) {
             return await this.get('/subforums', id, resource, querystring)

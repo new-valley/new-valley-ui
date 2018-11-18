@@ -30,7 +30,7 @@
     },
     async created () {
       const threads = await this.$client.getSubForums(this.id, 'topics')
-      threads.map((thread) => {
+      threads.data.map((thread) => {
         const item = {
           avatar: 'http://forum.imguol.com/forum/themes/jogos/images/folder_new_big.gif',
           title: thread.title,

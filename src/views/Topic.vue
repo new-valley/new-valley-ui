@@ -53,7 +53,7 @@
           const posts = await this.$client.getTopics(
             this.id, 'posts',
             `order=oldest&max_n_results=${this.fetchNumPosts}&offset=${this.fetchOffset}`)
-          posts.map((post) => {
+          posts.data.map((post) => {
             const item = {
               avatar: post.user.avatar.uri,
               title: post.user.username,
@@ -63,16 +63,14 @@
             const divider = { divider: true, inset: true }
             this.items.push(item, divider)
           })
-          if(posts.length === 0) {
-            this.fetchOffset = null
-          }
+          this.fetchOffset = posts.offset
         }
       }
     },
     async created () {
       this.$client.getTopics(this.id)
         .then((topic) => {
-            this.items[0] = { header: topic.title }
+            this.items[0] = { header: topic.data.title }
         })
       this.fetchPostsBlock()
     }
