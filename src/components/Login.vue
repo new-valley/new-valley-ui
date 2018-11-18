@@ -30,8 +30,10 @@
 
 <script>
   export default {
-    data: () => ({
-      dialog: false
-    })
+    data() {
+      return {
+        dialog: false
+      }
+    }
   }
 </script>
