@@ -30,7 +30,7 @@
     components: {
       BasicList,
       Reply,
-      LoadMoreButton,
+      LoadMoreButton
     },
     props: {
       id: {

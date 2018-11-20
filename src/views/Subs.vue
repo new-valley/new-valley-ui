@@ -5,15 +5,23 @@
         <basic-list :items="items"/>
       </v-flex>
     </v-layout>
+    <v-layout row>
+      <v-flex xs12 sm6 offset-sm3>
+        <v-card style="padding: 10px;">
+          <new-topic v-if="$client.isLoggedIn()" :subforum_id="id"/>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </div>
-  
 </template>
 
 <script>
   import BasicList from '../components/BasicListPage'
+  import NewTopic from '../components/NewTopic'
   export default {
     components: {
-      BasicList
+      BasicList,
+      NewTopic
     },
     props: {
       id: {

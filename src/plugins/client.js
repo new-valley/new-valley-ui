@@ -72,15 +72,23 @@ export default function (Vue, options) {
         async replyTopic(id, content) {
           return await this.post('/topics', id, 'posts', {content: content})
         },
+        async createTopic(subforum_id, title, content) {
+          this.post('/subforums', subforum_id, 'topics', {title: title})
+            .then(topic => {
+              this.replyTopic(topic.data.topic_id, content)
+            })
+        },
         formatErrorMessage(error) {
           let message = 'ERROR'
           if(error.response && error.response.data) {
             let errors = error.response.data.errors
-            let messages = []
-            for (const err of errors) {
-              messages.push(err.message)
+            if(errors) {
+              let messages = []
+              for (const err of errors) {
+                messages.push(err.message)
+              }
+              message = 'ERROR: ' + messages.join(', ')
             }
-            message = 'ERROR: ' + messages.join(', ')
           }
           return message
         }
