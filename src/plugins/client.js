@@ -66,6 +66,24 @@ export default function (Vue, options) {
             this.data.access_token = data.access_token
             this.data.refresh_token = data.refresh_token
         },
+        isLoggedIn() {
+          return this.data.access_token?true:false
+        },
+        async replyTopic(id, content) {
+          return await this.post('/topics', id, 'posts', {content: content})
+        },
+        formatErrorMessage(error) {
+          let message = 'ERROR'
+          if(error.response && error.response.data) {
+            let errors = error.response.data.errors
+            let messages = []
+            for (const err of errors) {
+              messages.push(err.message)
+            }
+            message = 'ERROR: ' + messages.join(', ')
+          }
+          return message
+        }
     }
 
     Object.defineProperties(Vue.prototype, {

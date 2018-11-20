@@ -10,14 +10,14 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12>
-                <v-text-field label="Texto" required></v-text-field>
+                <v-text-field v-model="content" label="Texto" required></v-text-field>
               </v-flex>
             </v-layout>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click.native="dialog = false">Enviar</v-btn>
+          <v-btn color="blue darken-1" flat @click="sendReply()">Enviar</v-btn>
           <v-btn color="blue darken-1" flat @click.native="dialog = false">Cancelar</v-btn>
         </v-card-actions>
       </v-card>
@@ -27,9 +27,32 @@
 
 <script>
   export default {
+    props: {
+      topic_id: {
+        type: String,
+        required: true
+      }
+    },
     data() {
       return {
-        dialog: false
+        dialog: false,
+        content: ''
+      }
+    },
+    methods: {
+      async sendReply() {
+        if(!this.$client.isLoggedIn()) {
+          alert('must log in to reply to topic')
+        } else {
+          this.$client.replyTopic(this.topic_id, this.content)
+            .then(post => {
+              alert('reply sent')
+            })
+            .catch(error => {
+              alert(this.$client.formatErrorMessage(error))
+            })
+            this.dialog = false
+        }
       }
     }
   }
