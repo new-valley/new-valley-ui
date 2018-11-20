@@ -1,11 +1,13 @@
 <template>
   <v-toolbar app dark color="primary">
-    <v-btn dark v-if="$route.path != '/'" @click="goToBackLocation">
+    <v-btn flat v-if="$route.path != '/'" @click="goToBackLocation">
       <v-icon dark left>arrow_back</v-icon>back
     </v-btn>
-    <v-toolbar-title v-if="$route.path === '/'" class="white--text">
+    <v-toolbar-title flat v-if="$route.path === '/'" class="white--text">
       New Valley
     </v-toolbar-title>
+    <v-flex xs3></v-flex>
+    <v-btn flat @click.stop="toggleLateralMenu()">menu</v-btn>
   </v-toolbar>
 </template>
 
@@ -35,6 +37,9 @@
       },
       goToBackLocation() {
         this.$router.push(this.getBackLocation())
+      },
+      toggleLateralMenu() {
+        this.$root.$emit('toggle-lat-menu-btn-clicked')
       }
     },
     mounted() {

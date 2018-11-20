@@ -4,14 +4,17 @@
     <v-content>
       <router-view/>
     </v-content>
+    <lateral-menu/>
   </v-app>
 </template>
 
 <script>
   import MainHeader from './components/MainHeader' 
+  import LateralMenu from './components/LateralMenu'
   export default {
     components: {
-      MainHeader
+      MainHeader,
+      LateralMenu
     },
     name: 'App',
     data () {
