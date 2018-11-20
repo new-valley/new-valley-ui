@@ -10,10 +10,10 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12>
-                <v-text-field label="Email" required></v-text-field>
+                <v-text-field v-model="input.username" label="Username" required></v-text-field>
               </v-flex>
               <v-flex xs12>
-                <v-text-field label="Senha" type="password" required></v-text-field>
+                <v-text-field v-model="input.password" label="Senha" type="password" required></v-text-field>
               </v-flex>
             </v-layout>
           </v-container>
@@ -21,7 +21,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" flat @click.native="dialog = false">Fechar</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="dialog = false">Logar</v-btn>
+          <v-btn color="blue darken-1" flat @click="login()">Logar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -32,7 +32,28 @@
   export default {
     data() {
       return {
-        dialog: false
+        dialog: false,
+        input: {
+          username: '',
+          password: ''
+        }
+      }
+    },
+    methods: {
+      login() {
+        if(this.input.username && this.input.password) {
+          this.$client.login(this.input.username, this.input.password)
+            .then(() => {
+              alert(`user "${this.input.username}" logged in`)
+              this.dialog = false
+            })
+            .catch((error) => {
+              if(error.response.status === 400) {
+                alert('invalid username or password')
+              }
+            })
+          this.input.password = ''
+        }
       }
     }
   }
