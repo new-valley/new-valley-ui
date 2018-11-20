@@ -37,11 +37,6 @@
       }
     },
     async created () {
-      this.$client.getSubForums(this.id)
-        .then(resp => {
-          this.$root.$emit(
-            'sub-visited', resp.data.title, resp.data.subforum_id)
-        })
       const threads = await this.$client.getSubForums(this.id, 'topics')
       threads.data.map((thread) => {
         const item = {

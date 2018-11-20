@@ -71,8 +71,7 @@
       this.$client.getTopics(this.id)
         .then((resp) => {
             this.items[0] = { header: resp.data.title }
-            this.$root.$emit('topic-visited', resp.data.title,
-              resp.data.subforum.title, resp.data.subforum.subforum_id)
+            this.$root.$emit('topic-visited', resp.data.subforum)
         })
       this.fetchPostsBlock()
     }

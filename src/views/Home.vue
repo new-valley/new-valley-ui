@@ -15,7 +15,6 @@
       BasicList
     },
     async created () {
-      this.$root.$emit('home-visited')
       const subs = await this.$client.getSubForums()
       subs.data.map((sub) => {
         const item = {
