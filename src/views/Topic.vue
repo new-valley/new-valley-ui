@@ -69,8 +69,10 @@
     },
     async created () {
       this.$client.getTopics(this.id)
-        .then((topic) => {
-            this.items[0] = { header: topic.data.title }
+        .then((resp) => {
+            this.items[0] = { header: resp.data.title }
+            this.$root.$emit('topic-visited', resp.data.title,
+              resp.data.subforum.title, resp.data.subforum.subforum_id)
         })
       this.fetchPostsBlock()
     }

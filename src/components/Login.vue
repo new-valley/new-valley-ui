@@ -46,6 +46,7 @@
             .then(() => {
               alert(`user "${this.input.username}" logged in`)
               this.dialog = false
+              this.$root.$emit('login')
             })
             .catch((error) => {
               if(error.response.status === 400) {
