@@ -18,10 +18,10 @@
       <v-list class="pt-0" dense>
         <v-divider></v-divider>
 
-        <v-list-tile v-for="item in items" :key="item.title" @click="">
-          <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
+        <v-list-tile v-for="item in items" :key="item.title" @click="$router.push(item.to)">
+            <v-list-tile-action>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-tile-action>
 
           <v-list-tile-content>
             <v-list-tile-title>{{ item.title }}</v-list-tile-title>
@@ -42,8 +42,7 @@
       return {
         drawer: false,
         items: [
-          { title: 'Home', icon: 'dashboard' },
-          { title: 'Subforums', icon: 'question_answer' }
+          { title: 'Home', icon: 'home', 'to': '/' }
         ],
         loggedInUser: {
           username: '',
