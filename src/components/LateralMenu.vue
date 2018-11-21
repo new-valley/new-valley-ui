@@ -2,13 +2,16 @@
   <v-layout wrap style="height: 200px;">
     <v-navigation-drawer v-model="drawer" fixed temporary right>
       <v-list class="pa-1">
-        <v-list-tile avatar>
+        <v-list-tile v-if="$client.isLoggedIn()" avatar>
           <v-list-tile-avatar>
-            <img src="https://randomuser.me/api/portraits/men/85.jpg">
+            <img src="loggedInUser.avatar.uri">
           </v-list-tile-avatar>
           <v-list-tile-content>
-            <v-list-tile-title>John Leider</v-list-tile-title>
+            <v-list-tile-title>{{ loggedInUser.username }}</v-list-tile-title>
           </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile v-if="!$client.isLoggedIn()" avatar>
+          <login/>
         </v-list-tile>
       </v-list>
 
@@ -30,24 +33,41 @@
 </template>
 
 <script>
+  import Login from './Login'
   export default {
     components: {
+      Login
     },
     data () {
       return {
         drawer: false,
         items: [
           { title: 'Home', icon: 'dashboard' },
-          { title: 'About', icon: 'question_answer' }
-        ]
+          { title: 'Subforums', icon: 'question_answer' }
+        ],
+        loggedInUser: {
+          username: '',
+          avatar: {
+            uri: ''
+          }
+        }
       }
     },
     methods: {
       toggleMenu() {
         this.drawer = !this.drawer
-      }
+      },
+      hideMenu() {
+        this.drawer = false
+      },
+      async postLoginAction() {
+        this.loggedInUser = await this.$client.getMe()
+        this.hideMenu()
+      },
     },
     mounted() {
+      this.$root.$on('login', this.postLoginAction)
+      this.$root.$on('hide-lat-menu-btn-clicked', this.hideMenu)
       this.$root.$on('toggle-lat-menu-btn-clicked', this.toggleMenu)
     },
   }

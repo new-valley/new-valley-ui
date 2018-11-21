@@ -5,7 +5,8 @@ export default function (Vue, options) {
     Vue.Client = {
         data: {
             access_token: null,
-            refresh_token: null
+            refresh_token: null,
+            me: null,
         },
         getUri(baseUri, id, resource) {
             let uri = baseUri
@@ -65,6 +66,7 @@ export default function (Vue, options) {
             const data = await this.post('/auth/login', null, null, form)
             this.data.access_token = data.access_token
             this.data.refresh_token = data.refresh_token
+            this.data.me = null
         },
         isLoggedIn() {
           return this.data.access_token?true:false
@@ -77,6 +79,13 @@ export default function (Vue, options) {
             .then(topic => {
               this.replyTopic(topic.data.topic_id, content)
             })
+        },
+        async getMe() {
+          if(!this.data.me && this.isLoggedIn()) {
+            const resp = await this.get('/me')
+            this.data.me = resp.data
+          }
+          return this.data.me
         },
         formatErrorMessage(error) {
           let message = 'ERROR'
