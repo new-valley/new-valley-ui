@@ -18,7 +18,7 @@
       <v-list class="pt-0" dense>
         <v-divider></v-divider>
 
-        <v-list-tile v-for="item in items" :key="item.title" @click="$router.push(item.to)">
+        <v-list-tile v-for="item in items" :key="item.title" @click="redirectAndHideMenu(item.to)">
             <v-list-tile-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action>
@@ -63,6 +63,11 @@
         this.loggedInUser = await this.$client.getMe()
         this.hideMenu()
       },
+      redirectAndHideMenu(to) {
+        console.log('to', to)
+        this.$router.push(to)
+        this.hideMenu()
+      }
     },
     mounted() {
       this.$root.$on('login', this.postLoginAction)
