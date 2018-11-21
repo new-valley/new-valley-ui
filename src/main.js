@@ -8,12 +8,15 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 import client from './plugins/client'
+import session from './plugins/session'
 
 Vue.config.productionTip = false
 
 Vue.use(Vuetify, {
   iconfont: 'mdi'
 })
+
+Vue.use(session)
 Vue.use(client)
 
 new Vue({

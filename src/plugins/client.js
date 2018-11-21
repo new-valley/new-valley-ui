@@ -19,7 +19,7 @@ export default function (Vue, options) {
             return uri
         },
         getAuthHeaders(access=true) {
-            let token = access?this.data.access_token:this.data.refresh_token
+            let token = access ? Vue.session.getAccessToken() : Vue.session.getRefreshToken()
             return token?{'Authorization': `Bearer ${token}`}:{}
         },
         async get (uri, id, resource, querystring) {
@@ -64,12 +64,12 @@ export default function (Vue, options) {
                 'password': password
             }
             const data = await this.post('/auth/login', null, null, form)
-            this.data.access_token = data.access_token
-            this.data.refresh_token = data.refresh_token
+            Vue.session.setAccessToken(data.access_token)
+            Vue.session.setRefreshToken(data.refresh_token)
             this.data.me = null
         },
         isLoggedIn() {
-          return this.data.access_token?true:false
+          return Vue.session.getAccessToken()
         },
         async replyTopic(id, content) {
           return await this.post('/topics', id, 'posts', {content: content})
