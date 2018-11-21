@@ -3,8 +3,8 @@
     <main-header/>
     <v-content>
       <router-view/>
+      <lateral-menu/>
     </v-content>
-    <lateral-menu/>
   </v-app>
 </template>
 
@@ -13,8 +13,8 @@
   import LateralMenu from './components/LateralMenu'
   export default {
     components: {
-      MainHeader,
-      LateralMenu
+      LateralMenu,
+      MainHeader
     },
     name: 'App',
     data () {
