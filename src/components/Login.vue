@@ -40,20 +40,21 @@
       }
     },
     methods: {
-      login() {
+      async login() {
         if(this.input.username && this.input.password) {
-          this.$client.login(this.input.username, this.input.password)
-            .then(() => {
-              alert(`user "${this.input.username}" logged in`)
-              this.dialog = false
-              this.$root.$emit('login')
-            })
-            .catch((error) => {
+          try {
+            await this.$client.login(this.input.username, this.input.password)
+            alert(`user "${this.input.username}" logged in`)
+            this.dialog = false
+          } catch(error)  {
               if(error.response.status === 400) {
                 alert('invalid username or password')
               }
-            })
+          }
           this.input.password = ''
+          const user = await this.$client.getMe()
+          this.$session.setUser(user.data)
+          this.$root.$emit('login')
         }
       }
     }

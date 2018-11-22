@@ -30,21 +30,23 @@ export default function (Vue) {
     destroySession () {
       localStorage.removeItem('access_token')
       localStorage.removeItem('refresh_token')
+      this.removeUser()
     },
 
     isAuthenticated () {
       return this.getAccessToken() != null
     },
     setUser (user) {
-      localStorage.setItem('user', user)
+      localStorage.setItem('user', JSON.stringify(user))
     },
     getUser () {
-      const user = localStorage.getItem('user')
+      let user = localStorage.getItem('user')
       
       const userIsEmpty = () => (!user)
       if (userIsEmpty()) 
-        return null 
+        return {username: 'user', avatar: {uri: 'bar'}}
 
+      user = JSON.parse(user)
       return user
     },
     removeUser () {

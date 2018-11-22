@@ -4,11 +4,14 @@
       <v-list class="pa-1">
         <v-list-tile v-if="$client.isLoggedIn()" avatar>
           <v-list-tile-avatar>
-            <img src="loggedInUser.avatar.uri">
+            <img src="user.avatar.uri">
           </v-list-tile-avatar>
           <v-list-tile-content>
-            <v-list-tile-title>{{ loggedInUser.username }}</v-list-tile-title>
+            <v-list-tile-title>{{ user.username }}</v-list-tile-title>
           </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile v-if="$client.isLoggedIn()" avatar>
+          <logout/>
         </v-list-tile>
         <v-list-tile v-if="!$client.isLoggedIn()" avatar>
           <login/>
@@ -34,9 +37,11 @@
 
 <script>
   import Login from './Login'
+  import Logout from './Logout'
   export default {
     components: {
-      Login
+      Login,
+      Logout
     },
     data () {
       return {
@@ -44,12 +49,6 @@
         items: [
           { title: 'Home', icon: 'home', 'to': '/' }
         ],
-        loggedInUser: {
-          username: '',
-          avatar: {
-            uri: ''
-          }
-        }
       }
     },
     methods: {
@@ -60,19 +59,26 @@
         this.drawer = false
       },
       async postLoginAction() {
-        this.loggedInUser = await this.$client.getMe()
+        this.hideMenu()
+      },
+      async postLogoutAction() {
         this.hideMenu()
       },
       redirectAndHideMenu(to) {
-        console.log('to', to)
         this.$router.push(to)
         this.hideMenu()
       }
     },
     mounted() {
+      this.$root.$on('logout', this.postLogoutAction)
       this.$root.$on('login', this.postLoginAction)
       this.$root.$on('hide-lat-menu-btn-clicked', this.hideMenu)
       this.$root.$on('toggle-lat-menu-btn-clicked', this.toggleMenu)
     },
+    computed: {
+      user() {
+        return this.$session.getUser()
+      }
+    }
   }
 </script>

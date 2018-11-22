@@ -68,8 +68,11 @@ export default function (Vue, options) {
             Vue.session.setRefreshToken(data.refresh_token)
             this.data.me = null
         },
+        logout() {
+          Vue.session.destroySession() 
+        },
         isLoggedIn() {
-          return Vue.session.getAccessToken()
+          return !!Vue.session.getAccessToken()
         },
         async replyTopic(id, content) {
           return await this.post('/topics', id, 'posts', {content: content})
@@ -81,11 +84,7 @@ export default function (Vue, options) {
             })
         },
         async getMe() {
-          if(!this.data.me && this.isLoggedIn()) {
-            const resp = await this.get('/me')
-            this.data.me = resp.data
-          }
-          return this.data.me
+          return await this.get('/me')
         },
         formatErrorMessage(error) {
           let message = 'ERROR'
