@@ -8,6 +8,7 @@
           :author=item.author
           :nPosts=item.nPosts
           :lastPostedAt=item.lastPostedAt
+          :lastAuthor=item.lastAuthor
           :to=item.to
           :divider=item.divider
         ></topic-list-item>
@@ -53,20 +54,22 @@
           author: topic.user.username,
           nPosts: topic.n_posts,
           lastPostedAt: topic.created_at,
+          lastAuthor: 'user',
           to: `/t/${topic.topic_id}`,
           divider: true
         }
-        this.setLastPost(topic, item)
+        this.setLastPostInfo(topic, item)
         this.items.push(item)
       })        
     },
     methods: {
-      setLastPost(topic, item) {
+      setLastPostInfo(topic, item) {
         this.$client.getTopics(
           topic.topic_id, 'posts', 'order=newest&max_n_results=1')
           .then(posts => {
             if(posts.total > 0) {
               item.lastPostedAt = posts.data[0].created_at
+              item.lastAuthor = posts.data[0].user.username
             }
           })
       }
