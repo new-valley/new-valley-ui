@@ -19,8 +19,22 @@
     name: 'App',
     data () {
       return {
-        //
+        //frequency of user update in milliseconds
+        userUpdateFrequency: 60000
       }
+    },
+    created() {
+      //updates user information periodically
+      setInterval(() => {
+        if(this.$client.isLoggedIn()) {
+          this.$client.getMe()
+            .then(user => {
+              this.$session.setUser(user.data)
+              console.log('updated user:', this.$session.getUser())
+              this.$root.$emit('user-updated')
+            })
+        }
+      }, this.userUpdateFrequency)
     }
   }
 </script>

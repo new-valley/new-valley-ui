@@ -56,21 +56,18 @@
     props: {
       username: {
         type: String,
-        //required: true,
         required: false,
-        default: 'Josesims'
+        default: 'user'
       },
       nPosts: {
         type: Number,
-        //required: true,
         required: false,
-        default: 9999
+        default: 0
       },
       nTopics: {
         type: Number,
-        //required: true,
         required: false,
-        default: 999
+        default: 0
       },
       avatarUri: {
         type: String,
@@ -80,12 +77,11 @@
       createdAt: {
         type: String,
         required: false,
-        default: '01/02/1994'
+        default: '1994-06-15'
       }
     },
     data () {
       return {
-        x: 0
       }
     },
     computed: {
