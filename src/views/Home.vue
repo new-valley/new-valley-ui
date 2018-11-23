@@ -2,7 +2,17 @@
   <div>
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
-        <basic-list :items="items"/>
+        <subforum-list-item
+          v-for="item in items" :key="item.subforum_id"
+          :title=item.title
+          :description=item.description
+          :nTopics=item.nTopics
+          :lastPostedAt=item.lastPostedAt
+          :lastAuthor=item.lastAuthor
+          :to=item.to
+          :divider=item.divider
+        ></subforum-list-item>
+
       </v-flex>
     </v-layout>
   </div>
@@ -10,28 +20,44 @@
 
 <script>
   import BasicList from '../components/BasicListPage'
+  import SubforumListItem from '../components/SubforumListItem'
   export default {
     components: {
+      SubforumListItem,
       BasicList
     },
     async created () {
       const subs = await this.$client.getSubForums()
-      subs.data.map((sub) => {
+      subs.data.map(sub => {
         const item = {
-          avatar: 'http://forum.imguol.com/forum/themes/jogos/images/folder_new_big.gif',
           title: sub.title,
-          subtitle: sub.description,
-          to: `/s/${sub.subforum_id}`
+          description: sub.description,
+          nTopics: sub.n_topics,
+          lastPostedAt: sub.created_at,
+          lastAuthor: 'user',
+          to: `/s/${sub.subforum_id}`,
+          divider: true
         }
-        const divider = { divider: true, inset: true }
-        this.items.push(item, divider)
+        this.setLastTopicInfo(sub, item)
+        this.items.push(item)
       })
     },
     data () {
       return {
         items: [
-          { header: 'Subforums' }
         ]
+      }
+    },
+    methods: {
+      setLastTopicInfo(sub, item) {
+        this.$client.getSubForums(
+          sub.subforum_id, 'topics', 'order=newest&max_n_results=1')
+          .then(topics => {
+            if(topics.total > 0) {
+              item.lastPostedAt = topics.data[0].created_at
+              item.lastAuthor = topics.data[0].user.username
+            }
+          })
       }
     }
   }
