@@ -2,7 +2,15 @@
   <div>
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
-        <basic-list :items="items"/>
+        <topic-list-item
+          v-for="item in items" :key="item.topic_id"
+          :title=item.title
+          :author=item.author
+          :nPosts=item.nPosts
+          :lastPostedAt=item.lastPostedAt
+          :to=item.to
+          :divider=item.divider
+        ></topic-list-item>
       </v-flex>
     </v-layout>
     <v-layout row>
@@ -18,8 +26,10 @@
 <script>
   import BasicList from '../components/BasicListPage'
   import NewTopic from '../components/NewTopic'
+  import TopicListItem from '../components/TopicListItem'
   export default {
     components: {
+      TopicListItem,
       BasicList,
       NewTopic
     },
@@ -32,22 +42,34 @@
     data () {
       return {
         items: [
-          { header: 'Tópicos' }
         ]
       }
     },
     async created () {
-      const threads = await this.$client.getSubForums(this.id, 'topics')
-      threads.data.map((thread) => {
+      const topics = await this.$client.getSubForums(this.id, 'topics')
+      topics.data.map(topic => {
         const item = {
-          avatar: 'http://forum.imguol.com/forum/themes/jogos/images/folder_new_big.gif',
-          title: thread.title,
-          subtitle: thread.user.username,
-          to: `/t/${thread.topic_id}`
+          title: topic.title,
+          author: topic.user.username,
+          nPosts: topic.n_posts,
+          lastPostedAt: topic.created_at,
+          to: `/t/${topic.topic_id}`,
+          divider: true
         }
-        const divider = { divider: true, inset: true }
-        this.items.push(item, divider)
+        this.setLastPost(topic, item)
+        this.items.push(item)
       })        
+    },
+    methods: {
+      setLastPost(topic, item) {
+        this.$client.getTopics(
+          topic.topic_id, 'posts', 'order=newest&max_n_results=1')
+          .then(posts => {
+            if(posts.total > 0) {
+              item.lastPostedAt = posts.data[0].created_at
+            }
+          })
+      }
     }
   }
 </script>
