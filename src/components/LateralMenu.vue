@@ -2,14 +2,22 @@
   <v-layout wrap style="height: 200px;">
     <v-navigation-drawer v-model="drawer" fixed temporary right>
       <v-list class="pa-1">
-        <v-list-tile v-if="$client.isLoggedIn()" avatar>
+        <user-card
+          v-if="$client.isLoggedIn()"
+          :username=user.username
+          :nPosts=user.n_posts
+          :nTopics=user.n_topics
+          :avatarUri=user.avatar.uri
+          :createdAt=user.created_at
+          />
+        <!---<v-list-tile v-if="$client.isLoggedIn()" avatar>
           <v-list-tile-avatar>
             <img src="user.avatar.uri">
           </v-list-tile-avatar>
           <v-list-tile-content>
             <v-list-tile-title>{{ user.username }}</v-list-tile-title>
           </v-list-tile-content>
-        </v-list-tile>
+        </v-list-tile>-->
         <v-list-tile v-if="$client.isLoggedIn()" avatar>
           <logout/>
         </v-list-tile>
@@ -38,8 +46,10 @@
 <script>
   import Login from './Login'
   import Logout from './Logout'
+  import UserCard from './UserCard'
   export default {
     components: {
+      UserCard,
       Login,
       Logout
     },
