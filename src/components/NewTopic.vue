@@ -1,8 +1,10 @@
 <template>
   <v-layout row justify-center>
     <v-dialog v-model="dialog" persistent max-width="600px">
-      <v-btn slot="activator" dark>Novo Tópico</v-btn>
-      <v-card>
+      <v-btn slot="activator" fab style="background-color: #ff8700">
+				<v-icon>add</v-icon>
+			</v-btn>
+      <v-card dark>
         <v-card-title>
           <span class="headline">Novo Tópico</span>
         </v-card-title>
@@ -13,7 +15,7 @@
                 <v-text-field v-model="title" label="Título" required></v-text-field>
               </v-flex>
               <v-flex xs12>
-                <v-text-field v-model="content" label="Texto" required></v-text-field>
+                <v-textarea :rules="rules" auto-grow v-model="content" label="Texto" required></v-textarea>
               </v-flex>
             </v-layout>
           </v-container>
@@ -40,7 +42,8 @@
       return {
         dialog: false,
         title: '',
-        content: ''
+        content: '',
+        rules: [v => !!v || "input is required"]
       }
     },
     methods: {
@@ -51,6 +54,7 @@
           this.$client.createTopic(this.subforum_id, this.title, this.content)
             .then(post => {
               alert('topic created')
+              this.$root.$emit('topic-created')
             })
             .catch(error => {
               console.log('ERROR', error)

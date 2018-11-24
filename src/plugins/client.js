@@ -79,7 +79,7 @@ export default function (Vue, options) {
           Vue.session.setAccessToken(resp.data.access_token)
         },
         logout() {
-          Vue.session.destroySession() 
+          Vue.session.destroySession()
         },
         wasLoggedIn() {
           return !!Vue.session.getAccessToken()

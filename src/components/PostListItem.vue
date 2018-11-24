@@ -7,7 +7,7 @@
 <v-layout row wrap justify-space-around fill-height>
 <!-- USER CARD -->
 <v-flex xs4 sm2 style="min-width: 100px; max-width: 130px;">
-  <user-card style="margin: 1px;"
+  <user-card style="border-radius: 0;"
     :username="message.user.username"
     :nPosts="message.user.n_posts"
     :nTopics="message.user.n_topics"
