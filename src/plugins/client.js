@@ -2,6 +2,7 @@ import axios from 'axios'
 
 export default function (Vue, options) {
     axios.defaults.baseURL = 'http://35.226.124.10:7310/api/'
+
     Vue.Client = {
         data: {
             access_token: null,
@@ -68,8 +69,20 @@ export default function (Vue, options) {
             Vue.session.setRefreshToken(data.refresh_token)
             this.data.me = null
         },
+        async refreshAccessToken() {
+          if(!this.wasLoggedIn()) {
+            return
+          }
+          const resp = await axios.post('/auth/token_refresh', {}, {
+              headers: this.getAuthHeaders(false)
+          })
+          Vue.session.setAccessToken(resp.data.access_token)
+        },
         logout() {
           Vue.session.destroySession() 
+        },
+        wasLoggedIn() {
+          return !!Vue.session.getAccessToken()
         },
         isLoggedIn() {
           return !!Vue.session.getAccessToken()
@@ -109,5 +122,19 @@ export default function (Vue, options) {
           }
         }
       })
+
+    axios.interceptors.response.use(function(resp) {
+      return resp
+    }, async function(error) {
+      if(error.response && error.response.status === 401) {
+        if(error.response.data.errors
+          && error.response.data.errors[0].message == 'expired_token') {
+          await this.refreshAccessToken()
+          error.config.headers['Authorization'] = this.getAuthHeaders()['Authorization']
+          return await axios.request(error.config)
+        }
+      }
+      return error
+    }.bind(Vue.Client))
 }
 
