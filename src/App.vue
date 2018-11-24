@@ -20,12 +20,14 @@
     data () {
       return {
         //frequency of user update in milliseconds
-        userUpdateFrequency: 60000
+        userUpdateFrequency: 60000,
+        daemons: [
+        ]
       }
     },
     created() {
       //updates user information periodically
-      setInterval(() => {
+      this.daemons.push(setInterval(function(){
         if(this.$client.isLoggedIn()) {
           this.$client.getMe()
             .then(user => {
@@ -34,7 +36,12 @@
               this.$root.$emit('user-updated')
             })
         }
-      }, this.userUpdateFrequency)
+      }.bind(this), this.userUpdateFrequency))
+    },
+    beforeDestroy() {
+      for (let d of this.daemons) {
+        clearInterval(d)
+      }
     }
   }
 </script>

@@ -6,7 +6,7 @@
           <v-layout column>
             <v-flex style="padding: 2px;">
               <v-layout row justify-center align-center fill-height>
-                <h3 style="overflow-wrap: break-word; word-wrap: break-word; word-break: break-word;" class="text-xs-center">{{ username }}</h3>
+                <h4 style="overflow-wrap: break-word; word-wrap: break-word; word-break: break-word;" class="text-xs-center">{{ username }}</h4>
               </v-layout>
             </v-flex>
             <v-flex style="padding: 2px;">
