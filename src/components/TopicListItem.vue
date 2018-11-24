@@ -3,7 +3,7 @@
   <v-layout row wrap justify-center>
      <v-flex xs12>
        <v-card dark color="blue-grey darken-2" class="white--text">
-          <v-card-title primary-title>
+          <v-card-title style="padding-top: 20px;" primary-title>
             <div>
               <router-link :to="to">
                 <div class="headline">{{ title }}</div>
