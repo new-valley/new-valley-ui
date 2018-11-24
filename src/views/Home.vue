@@ -2,6 +2,15 @@
   <div>
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
+        <v-layout column>
+          <v-flex xs12>
+            <v-card flat dark style="min-height: 40px; padding-top: 6px;">
+              <h2 class="text-xs-center">
+                Subfórums
+              </h2>
+            </v-card>
+          </v-flex>
+        </v-layout>
         <subforum-list-item
           v-for="item in items" :key="item.subforum_id"
           :title=item.title
@@ -12,7 +21,6 @@
           :to=item.to
           :divider=item.divider
         ></subforum-list-item>
-
       </v-flex>
     </v-layout>
   </div>
