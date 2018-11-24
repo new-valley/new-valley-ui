@@ -2,32 +2,34 @@
   <div>
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
-        <basic-list :items="items"/>
-      </v-flex>
-    </v-layout>
-    <v-layout row>
-      <v-flex xs12 sm6 offset-sm3>
-        <v-card style="padding: 10px;">
-          <reply v-if="$client.isLoggedIn()" :topic_id="id"/>
-        </v-card>
-      </v-flex>
-    </v-layout>
-    <v-layout row>
-      <v-flex xs12 sm6 offset-sm3>
-        <v-card style="padding: 10px;">
-          <load-more-button :onClick="fetchPostsBlock"/>
-        </v-card>
+        <post-list-item v-for="item in items" :key="item.post_id"
+          :message="item.message"
+        />
+        <v-layout row>
+          <v-flex xs6 sm6>
+            <v-card style="padding: 10px;">
+              <reply v-if="$client.isLoggedIn()" :topic_id="id"/>
+            </v-card>
+          </v-flex>
+          <v-flex xs6 sm6>
+            <v-card style="padding: 10px;">
+              <load-more-button :onClick="fetchPostsBlock"/>
+            </v-card>
+          </v-flex>
+        </v-layout>
       </v-flex>
     </v-layout>
   </div>
 </template>
 
 <script>
+  import PostListItem from '../components/PostListItem'
   import BasicList from '../components/BasicListPage'
   import Reply from '../components/Reply'
   import LoadMoreButton from '../components/LoadMoreButton'
   export default {
     components: {
+      PostListItem,
       BasicList,
       Reply,
       LoadMoreButton
@@ -44,7 +46,7 @@
             { header: 'topic' }
         ],
         fetchOffset: 0,
-        fetchNumPosts: 4,
+        fetchNumPosts: 20,
       }
     },
     methods: {
@@ -53,15 +55,12 @@
           const posts = await this.$client.getTopics(
             this.id, 'posts',
             `order=oldest&max_n_results=${this.fetchNumPosts}&offset=${this.fetchOffset}`)
-          posts.data.map((post) => {
+          posts.data.map(post => {
+            console.log('post:', post)
             const item = {
-              avatar: post.user.avatar.uri,
-              title: post.user.username,
-              subtitle: post.content,
-              to: `/p/${post.post_id}`
+              message: post
             }
-            const divider = { divider: true, inset: true }
-            this.items.push(item, divider)
+            this.items.push(item)
           })
           this.fetchOffset = posts.offset
         }
@@ -70,7 +69,6 @@
     async created () {
       this.$client.getTopics(this.id)
         .then((resp) => {
-            this.items[0] = { header: resp.data.title }
             this.$root.$emit('topic-visited', resp.data.subforum)
         })
       this.fetchPostsBlock()

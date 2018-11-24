@@ -1,12 +1,12 @@
 <template>
 <div>
   <v-layout row wrap justify-center>
-      <v-flex xs10 style="max-width: 200px;">
+      <v-flex xs12 style="max-width: 200px;">
         <v-card style="padding: 2px;">
           <v-layout column>
             <v-flex style="padding: 2px;">
               <v-layout row justify-center align-center fill-height>
-                <h2 class="text-xs-center">{{ username }}</h2>
+                <h3 style="overflow-wrap: break-word; word-wrap: break-word; word-break: break-word;" class="text-xs-center">{{ username }}</h3>
               </v-layout>
             </v-flex>
             <v-flex style="padding: 2px;">
