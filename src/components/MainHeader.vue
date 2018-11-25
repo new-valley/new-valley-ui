@@ -4,10 +4,12 @@
       New Valley
     </v-toolbar-title>
     <v-btn flat v-if="$route.path != '/'" @click="goToBackLocation">
-      <v-icon dark left>arrow_back</v-icon>back
+      <v-icon dark left>arrow_back</v-icon>
     </v-btn>
     <v-spacer></v-spacer>
-    <v-btn flat @click.stop="toggleLateralMenu()">menu</v-btn>
+    <v-btn flat @click.stop="toggleLateralMenu()">
+      <v-icon dark>menu</v-icon>
+    </v-btn>
   </v-toolbar>
 </template>
 
