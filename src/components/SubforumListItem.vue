@@ -14,24 +14,24 @@
          <v-layout row wrap justify-start style="padding: 4px 20px 20px 16px;">
            <v-flex xs3>
              <v-layout row wrap justify-center align-center fill-height>
-               <v-flex xs2><p style="margin: 0;" class="text-xs-right"><v-icon>insert_drive_file</v-icon></p></v-flex>
-               <v-flex xs10><p style="margin: 0 0 0 8px; font-size: 100%; overflow: hidden;">
+               <v-flex xs3><p style="margin: 0;" class="text-xs-center"><v-icon>insert_drive_file</v-icon></p></v-flex>
+               <v-flex xs9><p style="margin: 0 0 0 8px; font-size: 100%; overflow: hidden;" class="text-xs-left">
                  {{ nTopics }}
                </p></v-flex>
              </v-layout>
            </v-flex>
-           <v-flex xs5>
+           <v-flex xs6>
              <v-layout row wrap justify-center align-center fill-height>
-               <v-flex xs2><p style="margin: 0;" class="text-xs-right"><v-icon>today</v-icon></p></v-flex>
-               <v-flex xs10><p style="margin: 0 0 0 8px; overflow: hidden;">
+               <v-flex xs2><p style="margin: 0;" class="text-xs-center"><v-icon>today</v-icon></p></v-flex>
+               <v-flex xs10><p style="margin: 0 0 0 8px; overflow: hidden;" class="text-xs-left">
                  {{ lastPostDatetime }}
                </p></v-flex>
              </v-layout>
            </v-flex>
-           <v-flex xs4>
+           <v-flex xs3>
              <v-layout row wrap justify-center align-center fill-height>
-               <v-flex xs2><p style="margin: 0;" class="text-xs-right"><v-icon>directions_walk</v-icon></p></v-flex>
-               <v-flex xs10><p style="margin: 0 0 0 8px; font-size: 100%; overflow: hidden;">
+               <v-flex xs2><p style="margin: 0;" class="text-xs-center"><v-icon>directions_walk</v-icon></p></v-flex>
+               <v-flex xs10><p style="margin: 0 0 0 8px; font-size: 100%; overflow: hidden;" class="text-xs-left">
                  {{ lastAuthor }}
                </p></v-flex>
              </v-layout>
