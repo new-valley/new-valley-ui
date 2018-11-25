@@ -66,11 +66,21 @@
       hideMenu() {
         this.drawer = false
       },
-      async postLoginAction() {
+      postLoginAction() {
         this.hideMenu()
+        this.updateUser()
       },
-      async postLogoutAction() {
+      setDefaultUser() {
+        this.user = {
+          username: 'user',
+          avatar: {
+            'uri': 'http://example.com/img.jpg'
+          }
+        }
+      },
+      postLogoutAction() {
         this.hideMenu()
+        this.setDefaultUser()
       },
       redirectAndHideMenu(to) {
         this.$router.push(to)
