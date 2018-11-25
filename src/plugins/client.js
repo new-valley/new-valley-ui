@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 export default function (Vue, options) {
-    axios.defaults.baseURL = 'http://35.226.124.10:7310/api/'
+    //axios.defaults.baseURL = 'http://35.226.124.10:7310/api/'
+    axios.defaults.baseURL = 'http://ec2-18-231-167-148.sa-east-1.compute.amazonaws.com/api/'
 
     Vue.Client = {
         data: {
