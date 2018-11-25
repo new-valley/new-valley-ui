@@ -4,10 +4,30 @@
       <v-flex xs12 sm6 offset-sm3>
         <v-layout column>
           <v-flex xs12>
-            <v-card flat dark style="min-height: 40px; padding-top: 6px;">
-              <h2 class="text-xs-center">
-                {{ title }}
-              </h2>
+            <v-card dark>
+            <v-layout row justify-center>
+              <v-flex xs11 sm11>
+                <v-card flat dark style="min-height: 40px; padding-top: 6px;">
+                  <h2 class="text-xs-center"
+                      style="overflow-wrap: break-word; word-wrap: break-word; word-break: break-word;"
+                  >
+                    {{ title }}
+                  </h2>
+                </v-card>
+              </v-flex>
+              <v-flex xs1 v-if="canDeleteTopic">
+                <v-layout row justify-center align-center fill-height>
+                  <v-flex xs12 offset-sm4>
+                    <v-card flat dark>
+                      <yes-no-dialog
+                        :onYes="deleteTopic"
+                        :message="'deletar tópico?'"
+                      />
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+            </v-layout>
             </v-card>
           </v-flex>
           <v-divider dark></v-divider>
@@ -62,13 +82,13 @@
 
 <script>
   import PostListItem from '../components/PostListItem'
-  import BasicList from '../components/BasicListPage'
   import Reply from '../components/Reply'
   import LoadMoreButton from '../components/LoadMoreButton'
+  import YesNoDialog from '../components/YesNoDialog'
   export default {
     components: {
+      YesNoDialog,
       PostListItem,
-      BasicList,
       Reply,
       LoadMoreButton
     },
@@ -102,6 +122,7 @@
         maxFetchNumPosts: 100,
         nBlocks: 1,
         currPagePosts: new Set([]),
+        topic: null
       }
     },
     methods: {
@@ -135,8 +156,11 @@
         this.lastPostLoaded = (this.fetchOffset + this.nPostsLoaded) >= posts.total
         this.setNBlocks(posts)
       },
-      setTitle(topic) {
-        this.title = topic.data.title
+      setTopic(data) {
+        this.topic = data
+      },
+      setTitle(title) {
+        this.title = title
       },
       scrollToTop() {
         this.$vuetify.goTo(0)
@@ -162,19 +186,31 @@
       resetPostsList() {
         this.items = []
         this.nPostsLoaded = 0
+        this.currPagePosts.clear()
       },
       handlePostDeletion(postId) {
         if(this.currPagePosts.has(postId)) {
           this.resetPostsList()
           this.fetchPostsBlock()
         }
+      },
+      deleteTopic() {
+        this.$client.delete('/topics', this.id)
+          .then(() => {
+            alert('topic ' + this.id + ' deleted')
+            this.$router.push('/s/' + this.topic.subforum.subforum_id)
+          })
+          .catch(error => {
+            alert(this.$client.formatErrorMessage(error))
+          })
       }
     },
     async created () {
       this.$client.getTopics(this.id)
         .then((resp) => {
             this.$root.$emit('topic-visited', resp.data.subforum)
-            this.setTitle(resp)
+            this.setTopic(resp.data)
+            this.setTitle(resp.data.title)
         })
       this.updateUserLoggedInInfo()
       this.$root.$on('login', this.updateUserLoggedInInfo)
@@ -193,6 +229,16 @@
         return Math.max(
           Math.min(
             isNaN(this.numItems)?0:this.numItems, this.maxFetchNumPosts), 0)
+      },
+      canDeleteTopic() {
+        let ret = false
+        if(this.userIsLoggedIn) {
+          const user = this.$session.getUser()
+          if(user && this.topic && this.topic.user) {
+            ret = user.user_id == this.topic.user.user_id || user.username == 'su'
+          }
+        }
+        return ret
       }
     }
   }

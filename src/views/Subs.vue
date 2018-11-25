@@ -99,7 +99,6 @@
         ],
         daemons: [
         ],
-        fetchNumTopics: 4,
         userIsLoggedIn: false,
         nTopicsLoaded: 0,
         lastTopicLoaded: false,

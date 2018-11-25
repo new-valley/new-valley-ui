@@ -48,7 +48,9 @@
             </v-card></v-flex>
             <v-flex xs2 sm1>
               <yes-no-dialog
+                v-if="canDeletePost"
                 :onYes="deleteMethod"
+                :message="'deletar post?'"
               />
             </v-flex>
           </v-layout>
@@ -99,6 +101,16 @@
     computed: {
       postDatetime() {
         return moment(this.message.created_at).format('DD/MM/YYYY HH:mm')
+      },
+      canDeletePost() {
+        let ret = false
+        if(this.$client.isLoggedIn()) {
+          const user = this.$session.getUser()
+          if(user) {
+            ret = user.user_id == this.message.user.user_id || user.username == 'su'
+          }
+        }
+        return ret
       }
     },
     methods: {

@@ -44,7 +44,9 @@
 <script>
 export default {
   props: {
-    onYes: {},
+    onYes: {
+      required: true
+    },
     message: {
       type: String,
       required: false,
