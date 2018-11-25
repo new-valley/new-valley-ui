@@ -1,10 +1,10 @@
 <template>
 <div>
-<v-layout row wrap fill-height>
+<v-layout row fill-height>
 <!--user card and content-->
 <v-flex>
 <v-card dark>
-<v-layout row wrap justify-space-around fill-height>
+<v-layout row justify-space-around fill-height>
 <!-- USER CARD -->
 <v-flex xs4 sm3 style="min-width: 100px;">
   <user-card style="border-radius: 0;"
@@ -22,9 +22,9 @@
     <v-layout column fill-height>
       <v-flex xs11>
         <v-card flat>
-          <p style="margin: 0; overflow-wrap: break-word;">
-           {{ message.content }}
-          </p>
+          <v-responsive>
+            <p v-html="bbCodeParsedMessage" style="margin: 0; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word;"></p>
+          </v-responsive>
         </v-card>
       </v-flex>
       <v-divider light/>
@@ -71,8 +71,10 @@
 <script>
   import moment from 'moment'
   import axios from 'axios'
+  import bbCodeParser from 'js-bbcode-parser'
   import UserCard from './UserCard'
   import YesNoDialog from './YesNoDialog'
+
   export default {
     components: {
       YesNoDialog,
@@ -111,6 +113,12 @@
           }
         }
         return ret
+      },
+      bbCodeParsedMessage() {
+        let str = bbCodeParser.parse(this.message.content)
+          .replace(/<img/g, '<img style="max-width: 100%; height: auto;"')
+        console.log('str', str)
+        return str
       }
     },
     methods: {
