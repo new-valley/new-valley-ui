@@ -33,12 +33,12 @@
           <v-layout row wrap justify-end>
             <v-flex xs3 sm2 style="margin-top: 4px;"><v-card flat color="blue-grey darken-2" class="white--text">
               <p style="margin: 0;" class="text-xs-center">
-              # {{ postNum }}
+              #{{ postNum }}
               </p>
             </v-card></v-flex>
-            <v-flex xs7 sm4 style="margin-top: 4px;"><v-card flat color="blue-grey darken-2" class="white--text">
-              <v-layout row wrap justify-center justify-space-between align-center fill-height>
-                <v-flex xs2><p style="margin: 0;" class="text-xs-right">
+            <v-flex xs8 sm6 style="margin-top: 4px;"><v-card flat color="blue-grey darken-2" class="white--text">
+              <v-layout row wrap justify-space-between align-center fill-height>
+                <v-flex xs2><p style="margin: 0;" class="text-xs-center">
                   <v-icon small>calendar_today</v-icon>
                 </p></v-flex>
                 <v-flex xs10><p style="margin: 0;">
@@ -46,7 +46,7 @@
                 </p></v-flex>
               </v-layout>
             </v-card></v-flex>
-            <v-flex xs2 sm1>
+            <v-flex xs1 sm1>
               <yes-no-dialog
                 v-if="canDeletePost"
                 :onYes="deleteMethod"
