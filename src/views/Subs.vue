@@ -90,7 +90,7 @@
       numItems: {
         type: Number,
         required: false,
-        default: 4
+        default: 20
       }
     },
     data () {
