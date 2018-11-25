@@ -4,6 +4,20 @@ import Home from './views/Home.vue'
 
 Vue.use(Router)
 
+function castTopicParams(route) {
+  let ret = {
+    id: route.params.id
+  }
+  if(route.query.offset) {
+    ret.fetchOffset = Number(route.query.offset)
+  }
+  if(route.query.n_items) {
+    ret.numItems = Number(route.query.n_items)
+  }
+  console.log('query:', ret)
+  return ret
+}
+
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
@@ -11,6 +25,7 @@ export default new Router({
     {
       path: '/',
       name: 'home',
+      props: r => {console.log('router:', r.query); return {query: r.query}},
       component: Home
     },
     {
@@ -23,7 +38,7 @@ export default new Router({
       path: '/t/:id',
       component: () => import('./views/Topic.vue'),
       name: 't',
-      props: true
+      props: castTopicParams
     },
     {
       path: '/about',
