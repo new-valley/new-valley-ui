@@ -10,11 +10,14 @@
           :avatarUri=user.avatar.uri
           :createdAt=user.created_at
           />
-        <v-list-tile v-if="$client.isLoggedIn()">
-          <logout/>
-        </v-list-tile>
         <v-list-tile v-if="!$client.isLoggedIn()">
           <login/>
+        </v-list-tile>
+        <v-list-tile v-if="$client.isLoggedIn()">
+          <v-layout row justify-center>
+            <v-flex xs6><logout/></v-flex>
+            <v-flex xs6><update-user/></v-flex>
+          </v-layout>
         </v-list-tile>
       </v-list>
 
@@ -38,9 +41,11 @@
 <script>
   import Login from './Login'
   import Logout from './Logout'
+  import UpdateUser from './UpdateUser'
   import UserCard from './UserCard'
   export default {
     components: {
+      UpdateUser,
       UserCard,
       Login,
       Logout

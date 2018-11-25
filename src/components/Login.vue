@@ -10,7 +10,7 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12>
-                <v-text-field v-model="input.username" label="Username" required></v-text-field>
+                <v-text-field v-model="input.email" label="Email" required></v-text-field>
               </v-flex>
               <v-flex xs12>
                 <v-text-field v-model="input.password" label="Senha" type="password" required></v-text-field>
@@ -34,24 +34,25 @@
       return {
         dialog: false,
         input: {
-          username: '',
+          email: '',
           password: ''
         }
       }
     },
     methods: {
       async login() {
-        if(this.input.username && this.input.password) {
+        if(this.input.email && this.input.password) {
           try {
-            await this.$client.login(this.input.username, this.input.password)
-            alert(`user "${this.input.username}" logged in`)
+            await this.$client.login(this.input.email, this.input.password)
+            alert(`user logged in`)
             this.dialog = false
           } catch(error)  {
               if(error.response.status === 400) {
-                alert('invalid username or password')
+                alert('invalid email or password')
               }
           }
           this.input.password = ''
+          this.input.email = ''
           const user = await this.$client.getMe()
           this.$session.setUser(user.data)
           this.$root.$emit('login')

@@ -44,6 +44,17 @@ export default function (Vue, options) {
             })
             return response.data
         },
+        async put (uri, id, resource, form) {
+            uri = this.getUri(uri, id, resource)
+            let formData = new FormData()
+            for (let key in form) {
+                formData.set(key, form[key])
+            }
+            const response = await axios.put(uri, formData, {
+                headers: this.getAuthHeaders()
+            })
+            return response.data
+        },
         async delete (uri, id, resource, form) {
             uri = this.getUri(uri, id, resource)
             let formData = new FormData()
@@ -72,9 +83,9 @@ export default function (Vue, options) {
         async getTopics (id, resource, querystring) {
             return await this.get('/topics', id, resource, querystring)
         },
-        async login (username, password) {
+        async login (email, password) {
             let form = {
-                'username': username,
+                'email': email,
                 'password': password
             }
             const data = await this.post('/auth/login', null, null, form)
