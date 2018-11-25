@@ -57,7 +57,6 @@
               this.$root.$emit('topic-created')
             })
             .catch(error => {
-              console.log('ERROR', error)
               alert(this.$client.formatErrorMessage(error))
             })
             this.dialog = false

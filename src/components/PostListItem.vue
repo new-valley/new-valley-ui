@@ -117,7 +117,6 @@
       bbCodeParsedMessage() {
         let str = bbCodeParser.parse(this.message.content)
           .replace(/<img/g, '<img style="max-width: 100%; height: auto;"')
-        console.log('str', str)
         return str
       }
     },
