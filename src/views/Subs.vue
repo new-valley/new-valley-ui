@@ -32,6 +32,27 @@
                   <load-more-button :onClick="fetchTopicsBlock"/>
                 </v-card>
               </v-flex>
+              <v-flex xs6 sm6 v-if="nBlocks > 1">
+                <v-card flat style="padding: 10px;">
+                <v-layout row justify-center>
+                  <v-menu offset-y>
+                    <v-btn
+                      slot="activator"
+                      dark
+                      >Ir a bloco</v-btn>
+                    <v-list style="overflow: scroll; max-height: 300px">
+                      <v-list-tile
+                        v-for="i in nBlocks"
+                        :key="i"
+                        @click="goToBlock(i)"
+                      >
+                      <v-list-tile-title>bloco {{ i }}</v-list-tile-title>
+                      </v-list-tile>
+                    </v-list>
+                  </v-menu>
+                </v-layout>
+                </v-card>
+              </v-flex>
             </v-layout>
           </v-card>
         </v-flex>
@@ -65,6 +86,11 @@
         type: Number,
         required: false,
         default: 0
+      },
+      numItems: {
+        type: Number,
+        required: false,
+        default: 4
       }
     },
     data () {
@@ -78,7 +104,9 @@
         nTopicsLoaded: 0,
         lastTopicLoaded: false,
         title: 'subforum',
-        loadMoreButtonUpdateFrequency: 5000,
+        loadMoreButtonUpdateFrequency: 45000,
+        maxFetchNumTopics: 100,
+        nBlocks: 1,
       }
     },
     async created () {
@@ -93,6 +121,17 @@
       this.$root.$on('topic-created', this.updateLastTopicLoaded)
     },
     methods: {
+      goToBlock(i) {
+        const offset = (i - 1)*this.fetchNumTopics
+        this.$router.push({
+          name: 's',
+          query: {
+            'n_items': this.fetchNumTopics,
+            'offset': offset
+          }
+        })
+        this.$router.go()
+      },
       setLastPostInfo(topic, item) {
         this.$client.getTopics(
           topic.topic_id, 'posts', 'order=newest&max_n_results=1')
@@ -121,7 +160,8 @@
             this.setLastPostInfo(topic, item)
           })
         this.nTopicsLoaded += topics.data.length
-        this.lastTopicLoaded = (this.fetchOffset + this.nTopicsLoaded) == topics.total
+        this.lastTopicLoaded = (this.fetchOffset + this.nTopicsLoaded) >= topics.total
+        this.setNBlocks(topics)
       },
       setTitle(subforum) {
         this.title = subforum.data.title
@@ -132,10 +172,14 @@
       updateUserLoggedInInfo() {
         this.userIsLoggedIn = this.$client.isLoggedIn()
       },
+      setNBlocks(topics) {
+        this.nBlocks = Math.ceil(topics.total/Math.max(this.fetchNumTopics, 1))
+      },
       updateLastTopicLoaded() {
         this.$client.getSubForums(this.id, 'topics', `max_n_results=0&fields=`)
           .then(p => {
-            this.lastTopicLoaded = (this.fetchOffset + this.nTopicsLoaded) == p.total
+            this.lastTopicLoaded = (this.fetchOffset + this.nTopicsLoaded) >= p.total
+            this.setNBlocks(p)
           })
       },
       setLoadMoreUpdater() {
@@ -147,6 +191,13 @@
     beforeDestroy() {
       for (let d of this.daemons) {
         clearInterval(d)
+      }
+    },
+    computed: {
+      fetchNumTopics() {
+        return Math.max(
+          Math.min(
+            isNaN(this.numItems)?0:this.numItems, this.maxFetchNumTopics), 0)
       }
     }
   }

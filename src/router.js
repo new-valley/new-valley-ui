@@ -14,7 +14,19 @@ function castTopicParams(route) {
   if(route.query.n_items) {
     ret.numItems = Number(route.query.n_items)
   }
-  console.log('query:', ret)
+  return ret
+}
+
+function castSubforumParams(route) {
+  let ret = {
+    id: route.params.id
+  }
+  if(route.query.offset) {
+    ret.fetchOffset = Number(route.query.offset)
+  }
+  if(route.query.n_items) {
+    ret.numItems = Number(route.query.n_items)
+  }
   return ret
 }
 
@@ -25,14 +37,13 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      props: r => {console.log('router:', r.query); return {query: r.query}},
       component: Home
     },
     {
       path: '/s/:id',
       component: () => import('./views/Subs.vue'),
       name: 's',
-      props: true
+      props: castSubforumParams
     },
     {
       path: '/t/:id',
