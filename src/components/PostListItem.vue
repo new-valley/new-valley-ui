@@ -6,7 +6,7 @@
 <v-card dark>
 <v-layout row wrap justify-space-around fill-height>
 <!-- USER CARD -->
-<v-flex xs4 sm2 style="min-width: 100px; max-width: 130px;">
+<v-flex xs4 sm3 style="min-width: 100px;">
   <user-card style="border-radius: 0;"
     :username="message.user.username"
     :nPosts="message.user.n_posts"
@@ -17,8 +17,8 @@
 </v-flex>
 <!-- END OF USER CARD -->
 <!--content-->
-<v-flex xs8 sm10>
-<v-card flat height="100%" style="padding: 8px;">
+<v-flex xs8 sm9>
+<v-card flat height="100%" style="padding: 8px 8px 4px 8px;">
     <v-layout column fill-height>
       <v-flex xs11>
         <v-card flat>
@@ -28,20 +28,29 @@
         </v-card>
       </v-flex>
       <v-divider light/>
-      <v-flex xs1 style="padding-top: 4px;">
-        <v-card flat>
-          <v-layout row>
-            <v-flex xs4 sm8><v-card flat></v-card></v-flex xs6>
-            <v-flex xs8 sm4><v-card flat>
-              <v-layout row wrap justify-center align-center fill-height>
+      <v-flex xs1>
+        <v-card flat style="padding: 1px 0 2px 0;">
+          <v-layout row wrap justify-end>
+            <v-flex xs3 sm2 style="margin-top: 4px;"><v-card flat>
+              <p style="margin: 0;" class="text-xs-center">
+              # {{ postNum }}
+              </p>
+            </v-card></v-flex>
+            <v-flex xs7 sm4 style="margin-top: 4px;"><v-card flat>
+              <v-layout row wrap justify-center justify-space-between align-center fill-height>
                 <v-flex xs2><p style="margin: 0;" class="text-xs-right">
                   <v-icon small>calendar_today</v-icon>
                 </p></v-flex>
-                <v-flex xs10><p style="margin: 0 0 0 10px;">
+                <v-flex xs10><p style="margin: 0;">
                   {{ postDatetime }}
                 </p></v-flex>
               </v-layout>
-            </v-card></v-flex xs6>
+            </v-card></v-flex>
+            <v-flex xs2 sm1>
+              <yes-no-dialog
+                :onYes="deleteMethod"
+              />
+            </v-flex>
           </v-layout>
         </v-card>
       </v-flex>
@@ -59,15 +68,28 @@
 </template>
 <script>
   import moment from 'moment'
+  import axios from 'axios'
   import UserCard from './UserCard'
+  import YesNoDialog from './YesNoDialog'
   export default {
     components: {
+      YesNoDialog,
       UserCard
     },
     props: {
       message: {
         type: Object,
         required: true,
+      },
+      postNum: {
+        type: Number,
+        required: false,
+        default: 0
+      },
+      showDeleteButton: {
+        type: Boolean,
+        required: false,
+        default: false
       }
     },
     data () {
@@ -77,6 +99,18 @@
     computed: {
       postDatetime() {
         return moment(this.message.created_at).format('DD/MM/YYYY HH:mm')
+      }
+    },
+    methods: {
+      deleteMethod() {
+        this.$client.delete('/posts', this.message.post_id)
+          .then(() => {
+            alert('post ' + this.message.post_id + ' deleted')
+            this.$root.$emit('post-deleted', this.message.post_id)
+          })
+          .catch(error => {
+            alert(this.$client.formatErrorMessage(error))
+          })
       }
     }
   }

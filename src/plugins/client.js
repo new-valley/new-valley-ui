@@ -44,6 +44,19 @@ export default function (Vue, options) {
             })
             return response.data
         },
+        async delete (uri, id, resource, form) {
+            uri = this.getUri(uri, id, resource)
+            let formData = new FormData()
+            for (let key in form) {
+                formData.set(key, form[key])
+            }
+            let headers = this.getAuthHeaders()
+            headers['Content-Type'] = 'application/json'
+            const response = await axios.delete(uri, {
+                headers: headers
+            })
+            return response.data
+        },
         async getSubForums (id, resource, querystring) {
             return await this.get('/subforums', id, resource, querystring)
         },
@@ -133,8 +146,9 @@ export default function (Vue, options) {
           error.config.headers['Authorization'] = this.getAuthHeaders()['Authorization']
           return await axios.request(error.config)
         }
+        throw error
       }
-      return error
+      throw error
     }.bind(Vue.Client))
 }
 

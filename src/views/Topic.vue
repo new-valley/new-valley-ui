@@ -14,6 +14,8 @@
         </v-layout>
         <post-list-item v-for="item in items" :key="item.post_id"
           :message="item.message"
+          :postNum="item.postNum"
+          :showDeleteButton="item.showDeleteButton"
         />
         <v-flex xs12>
           <v-card dark>
@@ -99,6 +101,7 @@
         loadMoreButtonUpdateFrequency: 45000,
         maxFetchNumPosts: 100,
         nBlocks: 1,
+        currPagePosts: new Set([]),
       }
     },
     methods: {
@@ -118,11 +121,15 @@
         const posts = await this.$client.getTopics(
           this.id, 'posts',
           `order=oldest&max_n_results=${this.fetchNumPosts}&offset=${offset}`)
-        posts.data.map(post => {
+        const me_id = this.$client.isLoggedIn()?this.$session.getUser().user_id:null;
+        posts.data.map((post, index) => {
           const item = {
-            message: post
+            message: post,
+            postNum: this.fetchOffset + index,
+            showDeleteButton: post.user.user_id === me_id
           }
           this.items.push(item)
+          this.currPagePosts.add(post.post_id)
         })
         this.nPostsLoaded += posts.data.length
         this.lastPostLoaded = (this.fetchOffset + this.nPostsLoaded) >= posts.total
@@ -151,6 +158,16 @@
         this.daemons.push(setInterval(function(){
             this.updateLastPostLoaded()
           }.bind(this) , this.loadMoreButtonUpdateFrequency))
+      },
+      resetPostsList() {
+        this.items = []
+        this.nPostsLoaded = 0
+      },
+      handlePostDeletion(postId) {
+        if(this.currPagePosts.has(postId)) {
+          this.resetPostsList()
+          this.fetchPostsBlock()
+        }
       }
     },
     async created () {
@@ -164,6 +181,7 @@
       this.$root.$on('logout', this.updateUserLoggedInInfo)
       this.fetchPostsBlock().then(() => { this.setLoadMoreUpdater() })
       this.$root.$on('topic-reply-sent', this.updateLastPostLoaded)
+      this.$root.$on('post-deleted', this.handlePostDeletion)
     },
     beforeDestroy() {
       for (let d of this.daemons) {
