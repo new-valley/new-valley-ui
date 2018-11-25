@@ -1,6 +1,6 @@
 <template>
   <v-layout wrap style="height: 200px;">
-    <v-navigation-drawer v-model="drawer" fixed temporary right>
+    <v-navigation-drawer v-model="drawer" fixed temporary dark right>
       <v-list class="pa-1">
         <user-card
           v-if="$client.isLoggedIn()"

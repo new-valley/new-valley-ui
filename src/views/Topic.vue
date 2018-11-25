@@ -146,7 +146,7 @@
         posts.data.map((post, index) => {
           const item = {
             message: post,
-            postNum: this.fetchOffset + index,
+            postNum: this.fetchOffset + this.nPostsLoaded + index,
             showDeleteButton: post.user.user_id === me_id
           }
           this.items.push(item)

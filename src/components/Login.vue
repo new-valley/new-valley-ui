@@ -2,7 +2,7 @@
   <v-layout row justify-center>
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-btn slot="activator" dark>Entrar</v-btn>
-      <v-card>
+      <v-card dark>
         <v-card-title>
           <span class="headline">Entrar</span>
         </v-card-title>
