@@ -2,11 +2,13 @@
 <div>
   <v-layout row wrap justify-center>
       <v-flex xs12 style="max-width: 200px;">
-        <v-card style="padding: 2px;">
+        <v-card color="blue-grey darken-2" class="white--text" style="padding: 2px;">
           <v-layout column>
             <v-flex style="padding: 2px;">
               <v-layout row justify-center align-center fill-height>
-                <h4 style="overflow-wrap: break-word; word-wrap: break-word; word-break: break-word;" class="text-xs-center">{{ username }}</h4>
+                <router-link :to='userLink'>
+                  <h4 style="overflow-wrap: break-word; word-wrap: break-word; word-break: break-word;" class="text-xs-center">{{ username }}</h4>
+                </router-link>
               </v-layout>
             </v-flex>
             <v-flex style="padding: 2px;">
@@ -45,6 +47,7 @@
               </v-layout>
             </v-flex>
           </v-layout>
+          <v-divider vertical/>
         </v-card>
       </v-flex>
   </v-layout>
@@ -78,6 +81,11 @@
         type: String,
         required: false,
         default: '1994-06-15'
+      },
+      userLink: {
+        type: String,
+        required: false,
+        default: ''
       }
     },
     data () {

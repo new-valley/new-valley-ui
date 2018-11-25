@@ -3,10 +3,10 @@
 <v-layout row fill-height>
 <!--user card and content-->
 <v-flex>
-<v-card dark>
+<v-card dark color="blue-grey darken-2" class="white--text">
 <v-layout row justify-space-around fill-height>
 <!-- USER CARD -->
-<v-flex xs4 sm3 style="min-width: 100px;">
+<v-flex xs4 sm3 style="min-width: 100px; padding: 1px;">
   <user-card style="border-radius: 0;"
     :username="message.user.username"
     :nPosts="message.user.n_posts"
@@ -18,10 +18,10 @@
 <!-- END OF USER CARD -->
 <!--content-->
 <v-flex xs8 sm9>
-<v-card flat height="100%" style="padding: 8px 8px 4px 8px;">
+<v-card flat color="blue-grey darken-2" class="white--text" height="100%" style="padding: 8px 8px 4px 8px;">
     <v-layout column fill-height>
       <v-flex xs11>
-        <v-card flat>
+        <v-card flat color="blue-grey darken-2" class="white--text">
           <v-responsive>
             <p v-html="bbCodeParsedMessage" style="margin: 0; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word;"></p>
           </v-responsive>
@@ -29,14 +29,14 @@
       </v-flex>
       <v-divider light/>
       <v-flex xs1>
-        <v-card flat style="padding: 1px 0 2px 0;">
+        <v-card flat color="blue-grey darken-2" class="white--text" style="padding: 1px 0 2px 0;">
           <v-layout row wrap justify-end>
-            <v-flex xs3 sm2 style="margin-top: 4px;"><v-card flat>
+            <v-flex xs3 sm2 style="margin-top: 4px;"><v-card flat color="blue-grey darken-2" class="white--text">
               <p style="margin: 0;" class="text-xs-center">
               # {{ postNum }}
               </p>
             </v-card></v-flex>
-            <v-flex xs7 sm4 style="margin-top: 4px;"><v-card flat>
+            <v-flex xs7 sm4 style="margin-top: 4px;"><v-card flat color="blue-grey darken-2" class="white--text">
               <v-layout row wrap justify-center justify-space-between align-center fill-height>
                 <v-flex xs2><p style="margin: 0;" class="text-xs-right">
                   <v-icon small>calendar_today</v-icon>
