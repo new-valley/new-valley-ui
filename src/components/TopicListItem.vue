@@ -6,7 +6,12 @@
           <v-card-title style="padding-top: 20px;" primary-title>
             <div>
               <router-link :to="to">
-                <div class="headline">{{ title }}</div>
+                <div class="headline">
+                  {{ title }}
+                  <span v-if="pinned">
+                      <v-icon style="color: gray; margin-bottom: 3px; padding-left: 2px;">info</v-icon>
+                  </span>
+                </div>
               </router-link>
               <span>by <b>{{ author }}</b></span>
             </div>
@@ -81,7 +86,13 @@
         type: Boolean,
         required: false,
         default: false
+      },
+      pinned: {
+        type: Boolean,
+        required: false,
+        default: false
       }
+
     },
     data () {
       return {

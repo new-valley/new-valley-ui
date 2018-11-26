@@ -22,6 +22,7 @@
           :lastAuthor=item.lastAuthor
           :to=item.to
           :divider=item.divider
+          :pinned=item.pinned
         ></topic-list-item>
 
         <v-flex xs12>
@@ -116,6 +117,7 @@
       this.updateUserLoggedInInfo()
       this.$root.$on('login', this.updateUserLoggedInInfo)
       this.$root.$on('logout', this.updateUserLoggedInInfo)
+      this.fetchTopicsBlock('pinned', 'newest')
       this.fetchTopicsBlock().then(() => { this.setLoadMoreUpdater() })
       this.$root.$on('topic-created', this.updateLastTopicLoaded)
     },
@@ -137,10 +139,10 @@
           item.lastAuthor = topic.last_post.user.username
         }
       },
-      async fetchTopicsBlock() {
+      async fetchTopicsBlock(statuses='published', order='newest_last_post') {
         const offset = this.fetchOffset + this.nTopicsLoaded
         const topics = await this.$client.getSubForums(this.id, 'topics',
-          `order=newest_last_post&max_n_results=${this.fetchNumTopics}&offset=${offset}`)
+          `order=${order}&max_n_results=${this.fetchNumTopics}&offset=${offset}&statuses=${statuses}`)
         topics.data.map(topic => {
             const item = {
               title: topic.title,
@@ -149,7 +151,8 @@
               lastPostedAt: topic.created_at,
               lastAuthor: 'user',
               to: `/t/${topic.topic_id}`,
-              divider: true
+              divider: true,
+              pinned: statuses === 'pinned'
             }
             this.items.push(item)
             this.setLastPostInfo(topic, item)
