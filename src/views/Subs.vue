@@ -143,7 +143,6 @@
         const offset = this.fetchOffset + this.nTopicsLoaded
         const topics = await this.$client.getSubForums(this.id, 'topics',
           `order=${order}&max_n_results=${maxNResults}&offset=${offset}&statuses=${statuses}`)
-        console.log('cot these topics:', topics, statuses, order)
         topics.data.map(topic => {
             const item = {
               title: topic.title,
@@ -181,7 +180,6 @@
       },
       setNBlocks(topics) {
         this.nBlocks = Math.ceil(topics.total/Math.max(this.fetchNumTopics, 1))
-        console.log('blocks:', this.nBlocks)
       },
       updateLastTopicLoaded() {
         this.$client.getSubForums(this.id, 'topics', `max_n_results=0&fields=`)

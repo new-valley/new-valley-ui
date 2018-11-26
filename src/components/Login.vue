@@ -41,9 +41,9 @@
     },
     methods: {
       async login() {
-        if(this.input.email && this.input.password) {
+        if(this.sanitizedEmail && this.input.password) {
           try {
-            await this.$client.login(this.input.email, this.input.password)
+            await this.$client.login(this.sanitizedEmail, this.input.password)
             alert(`user logged in`)
             this.dialog = false
           } catch(error)  {
@@ -57,6 +57,12 @@
           this.$session.setUser(user.data)
           this.$root.$emit('login')
         }
+      }
+    },
+    computed: {
+      sanitizedEmail() {
+        console.log('e', this.input.email, this.input.email.trim())
+        return this.input.email.trim()
       }
     }
   }
