@@ -117,7 +117,7 @@
       this.updateUserLoggedInInfo()
       this.$root.$on('login', this.updateUserLoggedInInfo)
       this.$root.$on('logout', this.updateUserLoggedInInfo)
-      this.fetchTopicsBlock('pinned', 'newest')
+      this.fetchPinnedTopics()
       this.fetchTopicsBlock().then(() => { this.setLoadMoreUpdater() })
       this.$root.$on('topic-created', this.updateLastTopicLoaded)
     },
@@ -139,10 +139,11 @@
           item.lastAuthor = topic.last_post.user.username
         }
       },
-      async fetchTopicsBlock(statuses='published', order='newest_last_post') {
+      async fetchTopics(statuses, order, maxNResults) {
         const offset = this.fetchOffset + this.nTopicsLoaded
         const topics = await this.$client.getSubForums(this.id, 'topics',
-          `order=${order}&max_n_results=${this.fetchNumTopics}&offset=${offset}&statuses=${statuses}`)
+          `order=${order}&max_n_results=${maxNResults}&offset=${offset}&statuses=${statuses}`)
+        console.log('cot these topics:', topics, statuses, order)
         topics.data.map(topic => {
             const item = {
               title: topic.title,
@@ -159,6 +160,14 @@
           })
         this.nTopicsLoaded += topics.data.length
         this.lastTopicLoaded = (this.fetchOffset + this.nTopicsLoaded) >= topics.total
+        return topics
+      },
+      async fetchPinnedTopics() {
+        this.fetchTopics('pinned', 'newest', 999)
+      },
+      async fetchTopicsBlock() {
+        const topics = await this.fetchTopics(
+          'published', 'newest_last_post', this.fetchNumTopics)
         this.setNBlocks(topics)
       },
       setTitle(subforum) {
@@ -172,6 +181,7 @@
       },
       setNBlocks(topics) {
         this.nBlocks = Math.ceil(topics.total/Math.max(this.fetchNumTopics, 1))
+        console.log('blocks:', this.nBlocks)
       },
       updateLastTopicLoaded() {
         this.$client.getSubForums(this.id, 'topics', `max_n_results=0&fields=`)
