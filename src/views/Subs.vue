@@ -132,19 +132,15 @@
         this.$router.go()
       },
       setLastPostInfo(topic, item) {
-        this.$client.getTopics(
-          topic.topic_id, 'posts', 'order=newest&max_n_results=1')
-          .then(posts => {
-            if(posts.total > 0) {
-              item.lastPostedAt = posts.data[0].created_at
-              item.lastAuthor = posts.data[0].user.username
-            }
-          })
+        if(topic.last_post) {
+          item.lastPostedAt = topic.last_post.created_at
+          item.lastAuthor = topic.last_post.user.username
+        }
       },
       async fetchTopicsBlock() {
         const offset = this.fetchOffset + this.nTopicsLoaded
         const topics = await this.$client.getSubForums(this.id, 'topics',
-          `order=oldest&max_n_results=${this.fetchNumTopics}&offset=${offset}`)
+          `order=newest_last_post&max_n_results=${this.fetchNumTopics}&offset=${offset}`)
         topics.data.map(topic => {
             const item = {
               title: topic.title,
