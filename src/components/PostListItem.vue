@@ -21,9 +21,9 @@
 <v-card flat color="blue-grey darken-2" class="white--text" height="100%" style="padding: 8px 8px 4px 8px;">
     <v-layout column fill-height>
       <v-flex xs11>
-        <v-card flat color="blue-grey darken-2" class="white--text">
+        <v-card flat style="padding: 8px 8px 0 0;" color="blue-grey darken-2" class="white--text">
           <v-responsive>
-            <p v-html="bbCodeParsedMessage" style="margin: 0; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word;"></p>
+            <p v-html="bbCodeParsedMessage" style="margin: 0; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word;  white-space: pre-line; word-wrap: pre; text-align: justify;"></p>
           </v-responsive>
         </v-card>
       </v-flex>
