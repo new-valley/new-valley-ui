@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar app dark color="primary">
+  <v-toolbar app dark color="orange">
     <v-toolbar-title flat v-if="$route.path === '/'" class="white--text">
       New Valley
     </v-toolbar-title>
