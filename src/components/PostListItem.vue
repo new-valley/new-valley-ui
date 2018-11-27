@@ -116,7 +116,8 @@
         return ret
       },
       bbCodeParsedMessage() {
-        const parsed = XBBCODE.process({text: this.message.content})
+        const text = this.parseYotubeBBcode(this.message.content)
+        const parsed = XBBCODE.process({ text })
         let str = parsed.error?this.message.content:parsed.html
         str = str.replace(/<img/g, '<img style="max-width: 100%; height: auto;"')
         return str
@@ -136,6 +137,11 @@
       quote() {
         this.$root.$emit(
           'quoted-post', this.message.user.username, this.message.content)
+      },
+      parseYotubeBBcode(str) {
+        const regex = /\[youtube](.*(?=\[\/youtube\]))\[\/youtube\]/g
+        const html = '<iframe width="560" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>'
+        return str.replace(regex, html)
       }
     }
   }
