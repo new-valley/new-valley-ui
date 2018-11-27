@@ -71,7 +71,6 @@
 <script>
   import moment from 'moment'
   import axios from 'axios'
-  import bbCodeParser from 'js-bbcode-parser'
   import UserCard from './UserCard'
   import YesNoDialog from './YesNoDialog'
   import XBBCODE from 'epochtalk-bbcode-parser'
