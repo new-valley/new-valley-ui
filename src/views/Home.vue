@@ -59,11 +59,16 @@
     methods: {
       setLastTopicInfo(sub, item) {
         this.$client.getSubForums(
-          sub.subforum_id, 'topics', 'order=newest&max_n_results=1')
+          sub.subforum_id, 'topics', 'order=newest_last_post&max_n_results=1')
           .then(topics => {
             if(topics.total > 0) {
-              item.lastPostedAt = topics.data[0].created_at
-              item.lastAuthor = topics.data[0].user.username
+              if(topics.data[0].last_post) {
+                item.lastPostedAt = topics.data[0].last_post.created_at
+                item.lastAuthor = topics.data[0].last_post.user.username
+              } else {
+                item.lastPostedAt = topics.data[0].created_at
+                item.lastAuthor = topics.data[0].user.username
+              }
             }
           })
       }
