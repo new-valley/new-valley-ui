@@ -52,9 +52,10 @@
           alert('must log in to create topic')
         } else if (this.title && this.content) {
           this.$client.createTopic(this.subforum_id, this.title, this.content)
-            .then(post => {
+            .then(topic => {
               alert('topic created')
               this.$root.$emit('topic-created')
+              this.$router.push(`/t/${topic.data.topic_id}`)
             })
             .catch(error => {
               alert(this.$client.formatErrorMessage(error))

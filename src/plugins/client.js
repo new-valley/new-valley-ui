@@ -116,10 +116,10 @@ export default function (Vue, options) {
           return await this.post('/topics', id, 'posts', {content: content})
         },
         async createTopic(subforum_id, title, content) {
-          this.post('/subforums', subforum_id, 'topics', {title: title})
-            .then(topic => {
-              this.replyTopic(topic.data.topic_id, content)
-            })
+          const topic = await this.post(
+            '/subforums', subforum_id, 'topics', {title: title})
+          const post = await this.replyTopic(topic.data.topic_id, content)
+          return topic
         },
         async getMe() {
           return await this.get('/me')
