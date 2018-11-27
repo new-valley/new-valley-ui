@@ -61,7 +61,6 @@
     },
     computed: {
       sanitizedEmail() {
-        console.log('e', this.input.email, this.input.email.trim())
         return this.input.email.trim()
       }
     }

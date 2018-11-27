@@ -31,7 +31,7 @@
       <v-flex xs1>
         <v-card flat color="blue-grey darken-2" class="white--text" style="padding: 1px 0 2px 0;">
           <v-layout row wrap justify-end>
-            <v-flex xs3 sm2 style="margin-top: 4px;"><v-card flat color="blue-grey darken-2" class="white--text">
+            <v-flex @click="quote" xs3 sm2 style="margin-top: 4px;"><v-card flat color="blue-grey darken-2" class="white--text">
               <p style="margin: 0;" class="text-xs-center">
               #{{ postNum }}
               </p>
@@ -74,6 +74,7 @@
   import bbCodeParser from 'js-bbcode-parser'
   import UserCard from './UserCard'
   import YesNoDialog from './YesNoDialog'
+  import XBBCODE from 'epochtalk-bbcode-parser'
 
   export default {
     components: {
@@ -105,6 +106,7 @@
         return moment(this.message.created_at).format('DD/MM/YYYY HH:mm')
       },
       canDeletePost() {
+        let t = XBBCODE.process
         let ret = false
         if(this.$client.isLoggedIn()) {
           const user = this.$session.getUser()
@@ -115,8 +117,9 @@
         return ret
       },
       bbCodeParsedMessage() {
-        let str = bbCodeParser.parse(this.message.content)
-          .replace(/<img/g, '<img style="max-width: 100%; height: auto;"')
+        const parsed = XBBCODE.process({text: this.message.content})
+        let str = parsed.error?this.message.content:parsed.html
+        str = str.replace(/<img/g, '<img style="max-width: 100%; height: auto;"')
         return str
       }
     },
@@ -130,7 +133,26 @@
           .catch(error => {
             alert(this.$client.formatErrorMessage(error))
           })
+      },
+      quote() {
+        this.$root.$emit(
+          'quoted-post', this.message.user.username, this.message.content)
       }
     }
   }
 </script>
+<style>
+  .quote {
+    border-width: 0 1px 1px 1px;
+    border-style: solid;
+    border-color: gray;
+    padding: 4px;
+  }
+  .quoteHeader {
+    font-weight: bold;
+    border-width: 1px 1px 0 1px;
+    padding: 0 0 0 3px;
+    border-style: solid;
+    border-color: gray;
+  }
+</style>

@@ -39,7 +39,14 @@
         rules: [v => !!v || "input is required"]
       }
     },
+    created() {
+      this.$root.$on('quoted-post', this.quoteDialog)
+    },
     methods: {
+      quoteDialog(user, text) {
+        this.content = `[quote author="${user}"]${text}[/quote]\n`
+        this.dialog = true
+      },
       async sendReply() {
         if(!this.$client.isLoggedIn()) {
           alert('must log in to reply to topic')
