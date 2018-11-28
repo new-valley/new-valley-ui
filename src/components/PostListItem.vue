@@ -140,7 +140,7 @@
       },
       parseYotubeBBcode(str) {
         const regex = /\[youtube](.*(?=\[\/youtube\]))\[\/youtube\]/g
-        const html = '<iframe width="560" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>'
+        const html = '<iframe width="560" height="315" style="max-width: 100%; max-height: auto;" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>'
         return str.replace(regex, html)
       }
     }
